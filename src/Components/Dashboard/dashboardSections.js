@@ -1,32 +1,45 @@
 import React, { useEffect } from "react";
-import Prescription from "./prescription";
+import Patient from "./patient";
 import QRSection from "./qrcode";
 import { useState } from "react";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
-import Testresults from "./testresults";
-const DashboardSection = ({ name, uid }) => {
+import { useParams } from "react-router-dom";
+const DashboardSection = ({ name, image }) => {
+  //const [uid, setUid] = useState("");
+  let { uid } = useParams();
   const colRef = doc(db, "user", uid);
+  const colRef2 = doc(db, "doctors", "qQr7J8vNTYRxvle1C8h3aZJXBkF3");
   const [data, setData] = useState("");
+  const [dataDoctors, setDataDoctors] = useState("");
   const [load, setLoad] = useState(true);
+
   //const q=query(colRef,where)
+  const getDoctorsData = () => {
+    setDataDoctors("");
+    getDoc(colRef2).then((doc) => {
+      setDataDoctors(doc.data());
+      console.log(doc.data());
+      setLoad(false);
+    });
+  };
   const resetData = () => {
     setData("");
     getDoc(colRef).then((doc) => {
       setData(doc.data());
-      setLoad(false);
+      console.log(doc.data());
+      getDoctorsData();
     });
   };
   useEffect(() => {
     resetData();
-  }, []);
+  }, [uid]);
 
   const [btn, setBtn] = useState(1);
   //Selected button from the Prescriptions, Test Results, Predictions btns
   return (
     <div className="dashboard-section p-10 flex flex-col lg:grid lg:grid-cols-3 relative">
       <div className="dashboard-section__sec1 flex flex-col col-span-2 p-11  m-8 h-full bg-white rounded">
-        <p className="text-4xl font-medium tracking-tight">👋 Hi {name}</p>
         <div className="dashboard-section__sec1__btnholder mt-10  ">
           <button
             onClick={() => {
@@ -38,7 +51,7 @@ const DashboardSection = ({ name, uid }) => {
                 : "p-4 rounded btn font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
             }
           >
-            Prescriptions
+            Patient
           </button>
           <button
             onClick={() => {
@@ -50,39 +63,19 @@ const DashboardSection = ({ name, uid }) => {
                 : "p-4   ml-4 rounded btn font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
             }
           >
-            Test Results
-          </button>
-          <button
-            onClick={() => {
-              setBtn(3);
-            }}
-            className={
-              btn === 3
-                ? "p-4 rounded  ml-4 btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
-                : "p-4 rounded  ml-4 btn font-medium  pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
-            }
-          >
-            Predictions
+            All Patients
           </button>
         </div>
-        {btn === 1 ? <Prescription load={load} data={data.prescription} /> : ""}
-        {btn === 2 ? (
-          <Testresults
-            uid={uid}
-            load={load}
-            resetData={resetData}
-            data={data.test}
-          />
-        ) : (
-          ""
-        )}
+        {btn === 1 ? <Patient load={load} data={data} /> : ""}
+        {btn === 2 ? "" : ""}
       </div>
       <div className="dashboard-section__sec2 ">
         <QRSection
           name={name}
+          image={image}
           uid={uid}
           resetData={resetData}
-          data={data.personaldata}
+          data={dataDoctors.personaldata}
         />
       </div>
     </div>

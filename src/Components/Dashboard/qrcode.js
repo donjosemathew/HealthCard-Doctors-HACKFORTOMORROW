@@ -4,9 +4,8 @@ import QRCode from "qrcode";
 import { IoCall, IoArrowRedoCircleSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import EditDetails from "../dialogs/editpersonaldata";
-import { AiOutlineEdit } from "react-icons/ai";
-const QRSection = ({ data, resetData, uid, name }) => {
-  const [src, setSrc] = useState("");
+import { AiOutlineEdit, AiFillBank } from "react-icons/ai";
+const QRSection = ({ data, resetData, uid, name, image }) => {
   const [dialog, setDialog] = useState(false);
 
   /////Close Dialogue
@@ -17,11 +16,7 @@ const QRSection = ({ data, resetData, uid, name }) => {
   const OpenDialogue = () => {
     setDialog(true);
   };
-  useEffect(() => {
-    QRCode.toDataURL(`patient/${uid}`).then((data) => {
-      setSrc(data);
-    });
-  }, []);
+
   return (
     <>
       <div className="qrcode-section relative m-8 flex flex-col items-center   h-full bg-white rounded">
@@ -33,11 +28,7 @@ const QRSection = ({ data, resetData, uid, name }) => {
           <AiOutlineEdit className="" size="2.3rem" color="#575CE5" />
         </div>
         <div className="container flex flex-col mt-10 justify-center items-center w-full">
-          {src ? (
-            <img src={src} className="h-80" alt="QR" />
-          ) : (
-            <Loader type="TailSpin" color="#575ce5" height={65} width={65} />
-          )}
+          <img src={image} className=" rounded-full h-60" alt="QR" />
         </div>
         <p className="text-4xl font-medium tracking-tight">{name}</p>
         <div className="w-full">
@@ -46,32 +37,14 @@ const QRSection = ({ data, resetData, uid, name }) => {
               <div className="p-4 m-6 flex flex-row items-center justify-between relative bg-gray-100">
                 <IoCall size="2.4em" color="#575ce5" />
                 <p className="bg-transparent font-bold input-text text-2xl outline-none ml-3 text-gray-500">
-                  (602)-327-4129
+                  {data.phone}
                 </p>
               </div>
-              <div className="flex m-6  flex-row justify-between ">
-                <div className="p-4 w-full mr-4  flex flex-row items-center justify-between    relative bg-gray-100">
-                  <p className="bg-transparent input-text text-2xl outline-none ml-3 text-gray-500">
-                    Gender: <span className=" font-bold">{data.sex}</span>
-                  </p>
-                </div>
-                <div className="p-4 w-full   flex flex-row items-center justify-between    relative bg-gray-100">
-                  <p className="bg-transparent  input-text text-2xl outline-none ml-3 text-gray-500">
-                    Age: <span className=" font-bold">{data.age}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex m-6  flex-row justify-between ">
-                <div className="p-4 w-full mr-4  flex flex-row items-center justify-between    relative bg-gray-100">
-                  <p className="bg-transparent input-text text-2xl outline-none ml-3 text-gray-500">
-                    Height: <span className=" font-bold">{data.height}</span>
-                  </p>
-                </div>
-                <div className="p-4 w-full   flex flex-row items-center justify-between    relative bg-gray-100">
-                  <p className="bg-transparent  input-text text-2xl outline-none ml-3 text-gray-500">
-                    Weight: <span className=" font-bold">{data.weight}</span>
-                  </p>
-                </div>
+              <div className="p-4 m-6 flex flex-row items-center justify-between relative bg-gray-100">
+                <AiFillBank size="2.4em" color="#575ce5" />
+                <p className="bg-transparent font-bold input-text text-2xl outline-none ml-3 text-gray-500">
+                  {data.hospital}
+                </p>
               </div>
             </>
           ) : (

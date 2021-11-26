@@ -4,7 +4,11 @@ import Nav from "../Components/Nav/nav";
 import "../styles/style.scss";
 import { AuthContext } from "../context/auth";
 import { Redirect } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 const Dashboard = () => {
+  let location = useLocation();
+
   return (
     <AuthContext.Consumer>
       {({ user, load, SignIn, SignOut }) =>
@@ -12,10 +16,10 @@ const Dashboard = () => {
           user ? (
             <div className="home relative">
               <Nav image={user.photo} SignOut={SignOut} />
-              <DashboardSection uid={user.uid} name={user.name} />
+              <DashboardSection image={user.photo} name={user.name} />
             </div>
           ) : (
-            <Redirect to={"/"} />
+            <Redirect to={location} />
           )
         ) : (
           ""

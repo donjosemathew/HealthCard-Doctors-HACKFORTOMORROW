@@ -8,6 +8,9 @@ function App() {
       <AuthContextprovider>
         <div>
           <Switch>
+            <Route path="/dashboard/:uid">
+              <Dashboard />
+            </Route>
             <Route path="/dashboard">
               <Dashboard />
             </Route>

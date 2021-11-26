@@ -3,20 +3,17 @@ import { useState, useEffect } from "react/cjs/react.development";
 import { db } from "../../firebase/firebase";
 import Loader from "react-loader-spinner";
 const EditDetails = ({ CloseDialogue, data, resetData, uid }) => {
-  const docref = doc(db, "user", uid);
-  const [age, setAge] = useState(0);
-  const [sex, setSex] = useState("");
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
+  const docref = doc(db, "doctors", uid);
+  const [phone, setPhone] = useState(0);
+  const [hospital, setHospital] = useState("");
+
   const [uploading, setUploading] = useState(false);
   const update = () => {
     setUploading(true);
     updateDoc(docref, {
       personaldata: {
-        age: age,
-        sex: sex,
-        weight: weight,
-        height: height,
+        hospital: hospital,
+        phone: phone,
       },
     })
       .then(() => {
@@ -31,10 +28,8 @@ const EditDetails = ({ CloseDialogue, data, resetData, uid }) => {
   };
   useEffect(() => {
     if (data) {
-      setAge(data.age);
-      setHeight(data.height);
-      setWeight(data.weight);
-      setSex(data.sex);
+      setPhone(data.phone);
+      setHospital(data.hospital);
     }
   }, [data]);
   return (
@@ -53,17 +48,17 @@ const EditDetails = ({ CloseDialogue, data, resetData, uid }) => {
                 className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
                 for="username"
               >
-                Gender:
+                Hospital:
               </label>
               <input
                 onChange={(e) => {
-                  setSex(e.target.value);
+                  setHospital(e.target.value);
                 }}
                 className="text-2xl mt-2  focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
                 id="name"
                 type="text"
-                placeholder="Gender"
-                value={sex}
+                placeholder="Hospital"
+                value={hospital}
               />
             </div>
             <div class="lg:mt-6 mt-10 flex flex-col ">
@@ -71,55 +66,20 @@ const EditDetails = ({ CloseDialogue, data, resetData, uid }) => {
                 className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
                 for="username"
               >
-                Age:
+                Phone Number:
               </label>
               <input
                 onChange={(e) => {
-                  setAge(e.target.value);
+                  setPhone(e.target.value);
                 }}
                 className="text-2xl mt-2   focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
                 id="name"
-                type="number"
-                value={age}
-                placeholder="Age"
+                type="tel"
+                value={phone}
+                placeholder="Phone Number"
               />
             </div>
-            <div class="lg:mt-6 mt-10 flex flex-col ">
-              <label
-                className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
-                for="username"
-              >
-                Height:
-              </label>
-              <input
-                onChange={(e) => {
-                  setHeight(e.target.value);
-                }}
-                className="text-2xl mt-2   focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
-                id="name"
-                type="number"
-                placeholder="Height"
-                value={height}
-              />
-            </div>
-            <div class="lg:mt-6 mt-10 flex flex-col ">
-              <label
-                className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
-                for="username"
-              >
-                Weight:
-              </label>
-              <input
-                onChange={(e) => {
-                  setWeight(e.target.value);
-                }}
-                className="text-2xl  mt-2  focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
-                id="name"
-                type="number"
-                placeholder="Weight"
-                value={weight}
-              />
-            </div>
+
             <div className="flex justify-end mt-4 w-full flex-row bg-gray-50">
               <button
                 onClick={update}
