@@ -43,7 +43,7 @@ const QRSection = ({ data, resetData, uid, name, image, userid }) => {
               <div className="p-4 m-6 flex flex-row items-center justify-between relative bg-gray-100">
                 <AiFillBank size="2.4em" color="#575ce5" />
                 <p className="bg-transparent font-bold input-text text-2xl outline-none ml-3 text-gray-500">
-                  {data.hospital}
+                  {data.hospital ? data.hospital : ""}
                 </p>
               </div>
             </>

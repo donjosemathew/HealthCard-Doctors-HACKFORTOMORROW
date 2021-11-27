@@ -5,7 +5,7 @@ import { useState } from "react";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useParams } from "react-router-dom";
-const DashboardSection = ({ name, image, userid }) => {
+const DashboardSection = ({ name, image, userid, location }) => {
   //const [uid, setUid] = useState("");
   let { uid } = useParams();
   const colRef = doc(db, "user", uid);
@@ -40,7 +40,6 @@ const DashboardSection = ({ name, image, userid }) => {
 
   //const q=query(colRef,where)
   const getDoctorsData = () => {
-    setDataDoctors("");
     getDoc(colRef2).then((doc) => {
       if (doc.exists) {
         setDataDoctors(doc.data());
@@ -63,39 +62,48 @@ const DashboardSection = ({ name, image, userid }) => {
   useEffect(() => {
     resetData();
   }, [uid]);
-
+  useEffect(() => {
+    resetData();
+  }, []);
   const [btn, setBtn] = useState(1);
   //Selected button from the Prescriptions, Test Results, Predictions btns
   return (
     <div className="dashboard-section p-10 flex flex-col lg:grid lg:grid-cols-3 relative">
       <div className="dashboard-section__sec1 flex flex-col col-span-2 p-11  m-8 h-full bg-white rounded">
-        <div className="dashboard-section__sec1__btnholder mt-10  ">
-          <button
-            onClick={() => {
-              setBtn(1);
-            }}
-            className={
-              btn === 1
-                ? "p-4 rounded btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
-                : "p-4 rounded btn font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
-            }
-          >
-            Patient
-          </button>
-          <button
-            onClick={() => {
-              setBtn(2);
-            }}
-            className={
-              btn === 2
-                ? "p-4 ml-4 rounded btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
-                : "p-4   ml-4 rounded btn font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
-            }
-          >
-            All Patients
-          </button>
-        </div>
-        {btn === 1 ? (
+        {uid !== "dashboard" ? (
+          <div className="dashboard-section__sec1__btnholder mt-10  ">
+            <button
+              onClick={() => {
+                setBtn(1);
+              }}
+              className={
+                btn === 1
+                  ? "p-4 rounded btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
+                  : "p-4 rounded btn font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
+              }
+            >
+              Patient
+            </button>
+            <button
+              onClick={() => {
+                setBtn(2);
+              }}
+              className={
+                btn === 2
+                  ? "p-4 ml-4 rounded btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
+                  : "p-4   ml-4 rounded btn font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
+              }
+            >
+              All Patients
+            </button>
+          </div>
+        ) : (
+          <div className=" w-full flex items-center justify-center">
+            <p className="text-3xl font-bold">Please scan QR of patients </p>
+          </div>
+        )}
+
+        {btn === 1 && uid !== "dashboard" ? (
           <Patient
             dataDoctor={dataDoctors.personaldata}
             GetDate={currentday}
@@ -110,14 +118,18 @@ const DashboardSection = ({ name, image, userid }) => {
         {btn === 2 ? "" : ""}
       </div>
       <div className="dashboard-section__sec2 ">
-        <QRSection
-          name={name}
-          image={image}
-          uid={uid}
-          userid={userid}
-          resetData={resetData}
-          data={dataDoctors.personaldata}
-        />
+        {dataDoctors !== undefined ? (
+          <QRSection
+            name={name}
+            image={image}
+            uid={uid}
+            userid={userid}
+            resetData={resetData}
+            data={dataDoctors.personaldata}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

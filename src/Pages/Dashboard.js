@@ -17,6 +17,7 @@ const Dashboard = () => {
             <div className="home relative">
               <Nav image={user.photo} SignOut={SignOut} />
               <DashboardSection
+                location={location}
                 image={user.photo}
                 userid={user.uid}
                 name={user.name}
