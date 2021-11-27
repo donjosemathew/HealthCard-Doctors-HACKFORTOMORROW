@@ -3,39 +3,67 @@ import { useState, useEffect } from "react/cjs/react.development";
 import { db } from "../../firebase/firebase";
 import Loader from "react-loader-spinner";
 const EditPrescription = ({
-  CloseDialogue,
   data,
   resetData,
-  ClosePrescriptionDialogue,
+  CloseDialogue,
   dialogueAim,
   uid,
-  i,
 }) => {
   const docref = doc(db, "user", uid);
-  const [lab, setLab] = useState("");
-  const [category, setCategory] = useState("");
-  const [url, setUrl] = useState("");
-  const [icn, setIcn] = useState("");
-  const [testvalue, setTestValue] = useState(0);
-  const [uploading, setUploading] = useState(false);
+  const [medicinenme, setMedcinname] = useState("");
+  const [dose, setDose] = useState("");
+  const [duration, SetDuration] = useState("");
 
+  const [index, setIndex] = useState(-1);
+  const [uploading, setUploading] = useState(false);
+  let json = [];
+  let smedateindex = 0;
   const update = () => {
+    data.prescription.map((item, ind) => {
+      if (item.date === "29 Januvary 2021") {
+        smedateindex = ind;
+        data.prescription.map((item, ind) => {
+          if (item.date === "29 Januvary 2021") {
+            json.push(item);
+          }
+        });
+        json = [
+          ...json,
+          {
+            date: "26 Januvary 2021",
+            doctrname: "s",
+            hospital: "sds",
+            medicine: [
+              ...data.prescription[smedateindex].medicine,
+              { dosage: "sds", duration: "Sdsdsds", medname: "sdsd" },
+            ],
+          },
+        ];
+      } else {
+        json = [
+          ...data.prescription,
+          {
+            date: "29 Jan v",
+            doctrname: "sds",
+            hospital: "MIMS",
+            medicine: [
+              {
+                dosage: "sds",
+                duration: "Sdsdsds",
+                medname: "sdsd",
+              },
+            ],
+          },
+        ];
+        setIndex(-1);
+      }
+    });
     setUploading(true);
     updateDoc(docref, {
-      test: [
-        ...data,
-        {
-          category: category,
-          date: "dd",
-          icon: icn,
-          labname: lab,
-          url: url,
-          value: testvalue,
-        },
-      ],
+      prescription: json,
     })
       .then(() => {
-        ClosePrescriptionDialogue();
+        CloseDialogue();
         setUploading(false);
         resetData();
       })
@@ -56,7 +84,7 @@ const EditPrescription = ({
       .then(() => {
         setUploading(false);
         resetData();
-        ClosePrescriptionDialogue();
+        CloseDialogue();
       })
       .catch((error) => {
         setUploading(false);
@@ -81,7 +109,7 @@ const EditPrescription = ({
         <>
           <div className="dialog p-8 pl-12 rounded-md w-2/5  bg-white">
             <p className="text-3xl font-medium mt-4 tracking-tight">
-              {dialogueAim === "delete" ? "Delete Results" : "Add Test Results"}
+              {dialogueAim === "delete" ? "Delete Results" : "Add medicine"}
             </p>
 
             {dialogueAim !== "delete" ? (
@@ -91,17 +119,17 @@ const EditPrescription = ({
                     className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
                     for="username"
                   >
-                    Category
+                    Medicine Name:
                   </label>
                   <input
                     onChange={(e) => {
-                      setCategory(e.target.value);
+                      setMedcinname(e.target.value);
                     }}
                     className="text-2xl mt-2  focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
                     id="name"
                     type="text"
-                    placeholder="Category: Sugar"
-                    value={category}
+                    placeholder=" Medicine Name"
+                    value={medicinenme}
                   />
                 </div>
                 <div class="lg:mt-6 mt-10 flex flex-col ">
@@ -109,17 +137,17 @@ const EditPrescription = ({
                     className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
                     for="username"
                   >
-                    Lab:
+                    Dosage:
                   </label>
                   <input
                     onChange={(e) => {
-                      setLab(e.target.value);
+                      setDose(e.target.value);
                     }}
                     className="text-2xl mt-2   focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
                     id="name"
                     type="text"
-                    value={lab}
-                    placeholder="Age"
+                    value={dose}
+                    placeholder="Dosage"
                   />
                 </div>
                 <div class="lg:mt-6 mt-10 flex flex-col ">
@@ -127,55 +155,20 @@ const EditPrescription = ({
                     className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
                     for="username"
                   >
-                    Test value:
+                    Duration
                   </label>
                   <input
                     onChange={(e) => {
-                      setTestValue(e.target.value);
+                      SetDuration(e.target.value);
                     }}
                     className="text-2xl mt-2   focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
                     id="name"
-                    type="number"
-                    placeholder="Height"
-                    value={testvalue}
-                  />
-                </div>
-                <div class="lg:mt-6 mt-10 flex flex-col ">
-                  <label
-                    className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
-                    for="username"
-                  >
-                    Test result url:
-                  </label>
-                  <input
-                    onChange={(e) => {
-                      setUrl(e.target.value);
-                    }}
-                    className="text-2xl  mt-2  focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
-                    id="name"
-                    type="url"
-                    placeholder="Weight"
-                    value={url}
-                  />
-                </div>
-                <div class="lg:mt-6 mt-10 flex flex-col ">
-                  <label
-                    className="text-3xl head-txt text-gray-700 tracking-tight font-medium"
-                    for="username"
-                  >
-                    Icon:
-                  </label>
-                  <input
-                    onChange={(e) => {
-                      setIcn(e.target.value);
-                    }}
-                    className="text-2xl  mt-2  focus:outline-none focus:bg-gray-100  bg-gray-200 text-gray-700 tracking-tight p-4 outline-none   rounded "
-                    id="name"
                     type="text"
-                    placeholder="Icon :💉,🧂"
-                    value={icn}
+                    placeholder="Duration"
+                    value={duration}
                   />
                 </div>
+
                 <div className="flex justify-end mt-4 w-full flex-row bg-gray-50">
                   <button
                     onClick={update}
@@ -184,7 +177,7 @@ const EditPrescription = ({
                     &nbsp;Add&nbsp;
                   </button>
                   <button
-                    onClick={ClosePrescriptionDialogue}
+                    onClick={CloseDialogue}
                     className="p-4 ml-4 rounded btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
                   >
                     Cancel
@@ -200,7 +193,7 @@ const EditPrescription = ({
                   &nbsp;Delete&nbsp;
                 </button>
                 <button
-                  onClick={ClosePrescriptionDialogue}
+                  onClick={CloseDialogue}
                   className="p-4 ml-4 rounded btn-active font-medium pl-7 pr-7 text-2xl tracking-tight	bg-blue-50"
                 >
                   Cancel

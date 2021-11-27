@@ -66,7 +66,7 @@ const DashboardSection = ({ name, image }) => {
             All Patients
           </button>
         </div>
-        {btn === 1 ? <Patient load={load} data={data} /> : ""}
+        {btn === 1 ? <Patient uid={uid} load={load} data={data} /> : ""}
         {btn === 2 ? "" : ""}
       </div>
       <div className="dashboard-section__sec2 ">

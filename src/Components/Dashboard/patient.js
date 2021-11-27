@@ -4,9 +4,12 @@ import Loader from "react-loader-spinner";
 
 import { IoAddCircleSharp } from "react-icons/io5";
 import EditPrescription from "../dialogs/addprescription";
-const Patient = ({ data, load }) => {
+const Patient = ({ data, load, uid }) => {
   const [btn, setBtn] = useState(1);
-
+  const [addMedicine, setAddMedicine] = useState(false);
+  const CloseDialogue = () => {
+    setAddMedicine(false);
+  };
   return (
     <>
       <div className="prescription w-full h-full mt-2 p-6 pt-0">
@@ -101,6 +104,9 @@ const Patient = ({ data, load }) => {
                     </div>
                     <div className="p-3 flex flex-row justify-end">
                       <IoAddCircleSharp
+                        onClick={() => {
+                          setAddMedicine(true);
+                        }}
                         size="3em"
                         className="cursor-pointer"
                         color="#575ce5"
@@ -159,7 +165,16 @@ const Patient = ({ data, load }) => {
           </div>
         )}
       </div>
-      <EditPrescription />
+      {!addMedicine ? (
+        ""
+      ) : (
+        <EditPrescription
+          dialogueAim="ds"
+          uid={uid}
+          data={data}
+          CloseDialogue={CloseDialogue}
+        />
+      )}
     </>
   );
 };
