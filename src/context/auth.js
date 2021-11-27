@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
-import { provider, auth } from "../firebase/firebase";
+import { provider, auth, db } from "../firebase/firebase";
+import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 export const AuthContext = createContext();
 
 const AuthContextprovider = (props) => {
@@ -39,7 +40,27 @@ const AuthContextprovider = (props) => {
         console.log(error);
       });
   };
-
+  useEffect(() => {
+    if (!load && currentuser) {
+      console.log(currentuser, "user");
+      AddData();
+    }
+  }, [currentuser]);
+  function AddData() {
+    const colRef2 = doc(db, "doctors", currentuser.uid);
+    getDoc(colRef2).then((docu) => {
+      console.log(docu.exists());
+      if (!docu.exists()) {
+        setDoc(doc(db, "doctors", currentuser.uid), {
+          personaldata: {
+            name: currentuser.name ? currentuser.name : "Not vilable",
+            hospital: "Not Avilable",
+            phoneNumber: "Not Available",
+          },
+        });
+      }
+    });
+  }
   /////////////////Signout
   const SignOut = () => {
     console.log("logout");

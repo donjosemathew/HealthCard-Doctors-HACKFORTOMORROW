@@ -11,13 +11,11 @@ function App() {
             <Route path="/dashboard/:uid">
               <Dashboard />
             </Route>
-            <Route path="/dashboard">
-              <Dashboard />
-            </Route>
-            <Route path="/topics">
+
+            <Route exact path="/topics">
               <Home />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Home />
             </Route>
           </Switch>

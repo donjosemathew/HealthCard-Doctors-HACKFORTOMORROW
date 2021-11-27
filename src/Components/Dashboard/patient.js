@@ -4,21 +4,38 @@ import Loader from "react-loader-spinner";
 
 import { IoAddCircleSharp } from "react-icons/io5";
 import EditPrescription from "../dialogs/addprescription";
-const Patient = ({ data, load, uid }) => {
+const Patient = ({
+  data,
+  load,
+  uid,
+  resetData,
+  GetDate,
+  userid,
+  dataDoctor,
+}) => {
   const [btn, setBtn] = useState(1);
   const [addMedicine, setAddMedicine] = useState(false);
   const CloseDialogue = () => {
     setAddMedicine(false);
   };
+  let medicinedata = "";
+  if (data) {
+    data.prescription.map((item, index) => {
+      if (item.date === GetDate) {
+        medicinedata = item;
+      }
+    });
+  }
+
   return (
     <>
       <div className="prescription w-full h-full mt-2 p-6 pt-0">
         {!load ? (
-          data ? (
+          true ? (
             <div className="prescription__card mt-8">
               <div className="flex flex-row justify-between">
                 <p className="text-2xl head-txt font-medium tracking-tight">
-                  Date
+                  {GetDate}
                 </p>
               </div>
               <div className="flex flex-row justify-between">
@@ -29,7 +46,7 @@ const Patient = ({ data, load, uid }) => {
                 <p className="text-2xl head-txt font-medium tracking-tight">
                   Age:
                   <span className="font-bold sub-txt ">
-                    {data.personaldata.age}
+                    {data ? data.personaldata.age : "Not Available"}
                   </span>
                 </p>
               </div>
@@ -37,7 +54,7 @@ const Patient = ({ data, load, uid }) => {
                 <div className="flex flex-row items-center mt-6">
                   <FaRegHospital size="2em" color="#8390bb" />
                   <p className="text-2xl ml-5 head-txt font-medium tracking-tight">
-                    Mims Calicut
+                    {dataDoctor.hospital}
                   </p>
                 </div>
                 <div className="dashboard-section__sec1__btnholder mt-5 mb-5">
@@ -83,24 +100,30 @@ const Patient = ({ data, load, uid }) => {
                           Duration
                         </p>
                       </div>
-                      {["s"].map((data, i) => {
-                        return (
-                          <div className="flex flex-row w-full mt-3" key={i}>
-                            <p className="text-2xl  sub-txt ml-5  font-medium tracking-tight">
-                              5
-                            </p>
-                            <p className="text-2xl ml-5 sub-txt w-full text-center  head-txt font-medium tracking-tight">
-                              fgf
-                            </p>
-                            <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
-                              dOSAGE
-                            </p>
-                            <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
-                              10 nights
-                            </p>
-                          </div>
-                        );
-                      })}
+
+                      {medicinedata
+                        ? medicinedata.medicine.map((data, i) => {
+                            return (
+                              <div
+                                className="flex flex-row w-full mt-3"
+                                key={i}
+                              >
+                                <p className="text-2xl  sub-txt ml-5  font-medium tracking-tight">
+                                  {i + 1}
+                                </p>
+                                <p className="text-2xl ml-5 sub-txt w-full text-center  head-txt font-medium tracking-tight">
+                                  {data.medname}
+                                </p>
+                                <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
+                                  {data.dosage}
+                                </p>
+                                <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
+                                  {data.duration}
+                                </p>
+                              </div>
+                            );
+                          })
+                        : ""}
                     </div>
                     <div className="p-3 flex flex-row justify-end">
                       <IoAddCircleSharp
@@ -132,24 +155,26 @@ const Patient = ({ data, load, uid }) => {
                         Date
                       </p>
                     </div>
-                    {data.test.map((data, i) => {
-                      return (
-                        <div className="flex flex-row w-full mt-3" key={i}>
-                          <p className="text-2xl  sub-txt ml-5  font-medium tracking-tight">
-                            {i + 1}
-                          </p>
-                          <p className="text-2xl ml-5 sub-txt w-full text-center  head-txt font-medium tracking-tight">
-                            {data.category}
-                          </p>
-                          <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
-                            {data.url}
-                          </p>
-                          <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
-                            {data.date}
-                          </p>
-                        </div>
-                      );
-                    })}
+                    {data
+                      ? data.test.map((data, i) => {
+                          return (
+                            <div className="flex flex-row w-full mt-3" key={i}>
+                              <p className="text-2xl  sub-txt ml-5  font-medium tracking-tight">
+                                {i + 1}
+                              </p>
+                              <p className="text-2xl ml-5 sub-txt w-full text-center  head-txt font-medium tracking-tight">
+                                {data.category}
+                              </p>
+                              <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
+                                {data.url}
+                              </p>
+                              <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
+                                {data.date}
+                              </p>
+                            </div>
+                          );
+                        })
+                      : ""}
                   </div>
                 ) : (
                   ""
@@ -169,8 +194,11 @@ const Patient = ({ data, load, uid }) => {
         ""
       ) : (
         <EditPrescription
+          GetDate={GetDate}
+          resetData={resetData}
           dialogueAim="ds"
           uid={uid}
+          userid={userid}
           data={data}
           CloseDialogue={CloseDialogue}
         />

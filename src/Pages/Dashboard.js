@@ -16,7 +16,11 @@ const Dashboard = () => {
           user ? (
             <div className="home relative">
               <Nav image={user.photo} SignOut={SignOut} />
-              <DashboardSection image={user.photo} name={user.name} />
+              <DashboardSection
+                image={user.photo}
+                userid={user.uid}
+                name={user.name}
+              />
             </div>
           ) : (
             <Redirect to={location} />

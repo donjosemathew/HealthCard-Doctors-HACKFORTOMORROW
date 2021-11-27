@@ -30,7 +30,7 @@ const Home = () => {
             </div>
           </>
         ) : (
-          <Redirect to={"/dashboard"} />
+          <Redirect to={"/dashboard/not"} />
         )
       }
     </AuthContext.Consumer>

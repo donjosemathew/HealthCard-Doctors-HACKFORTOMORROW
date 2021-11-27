@@ -8,56 +8,58 @@ const EditPrescription = ({
   CloseDialogue,
   dialogueAim,
   uid,
+  GetDate,
 }) => {
   const docref = doc(db, "user", uid);
   const [medicinenme, setMedcinname] = useState("");
   const [dose, setDose] = useState("");
   const [duration, SetDuration] = useState("");
 
-  const [index, setIndex] = useState(-1);
   const [uploading, setUploading] = useState(false);
   let json = [];
-  let smedateindex = 0;
+  let smedateindex = -1;
   const update = () => {
     data.prescription.map((item, ind) => {
-      if (item.date === "29 Januvary 2021") {
+      if (item.date === GetDate) {
         smedateindex = ind;
-        data.prescription.map((item, ind) => {
-          if (item.date === "29 Januvary 2021") {
-            json.push(item);
-          }
-        });
-        json = [
-          ...json,
-          {
-            date: "26 Januvary 2021",
-            doctrname: "s",
-            hospital: "sds",
-            medicine: [
-              ...data.prescription[smedateindex].medicine,
-              { dosage: "sds", duration: "Sdsdsds", medname: "sdsd" },
-            ],
-          },
-        ];
-      } else {
-        json = [
-          ...data.prescription,
-          {
-            date: "29 Jan v",
-            doctrname: "sds",
-            hospital: "MIMS",
-            medicine: [
-              {
-                dosage: "sds",
-                duration: "Sdsdsds",
-                medname: "sdsd",
-              },
-            ],
-          },
-        ];
-        setIndex(-1);
       }
     });
+    if (smedateindex !== -1) {
+      data.prescription.map((item, ind) => {
+        if (item.date !== "2d6 Januvary 2021") {
+          json.push(item);
+        }
+      });
+      json = [
+        ...json,
+        {
+          date: GetDate,
+          doctrname: "s",
+          hospital: "sds",
+          medicine: [
+            ...data.prescription[smedateindex].medicine,
+            { dosage: dose, duration: duration, medname: medicinenme },
+          ],
+        },
+      ];
+    } else {
+      json = [
+        ...data.prescription,
+        {
+          date: GetDate,
+          doctrname: "sds",
+          hospital: "MIMS",
+          medicine: [
+            {
+              dosage: dose,
+              duration: duration,
+              medname: medicinenme,
+            },
+          ],
+        },
+      ];
+    }
+
     setUploading(true);
     updateDoc(docref, {
       prescription: json,

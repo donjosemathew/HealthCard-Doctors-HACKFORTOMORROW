@@ -5,7 +5,7 @@ import { IoCall, IoArrowRedoCircleSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import EditDetails from "../dialogs/editpersonaldata";
 import { AiOutlineEdit, AiFillBank } from "react-icons/ai";
-const QRSection = ({ data, resetData, uid, name, image }) => {
+const QRSection = ({ data, resetData, uid, name, image, userid }) => {
   const [dialog, setDialog] = useState(false);
 
   /////Close Dialogue
@@ -69,6 +69,7 @@ const QRSection = ({ data, resetData, uid, name, image }) => {
           uid={uid}
           resetData={resetData}
           data={data}
+          userid={userid}
           CloseDialogue={CloseDialogue}
         />
       ) : (

@@ -2,8 +2,9 @@ import { updateDoc, doc } from "firebase/firestore";
 import { useState, useEffect } from "react/cjs/react.development";
 import { db } from "../../firebase/firebase";
 import Loader from "react-loader-spinner";
-const EditDetails = ({ CloseDialogue, data, resetData, uid }) => {
-  const docref = doc(db, "doctors", uid);
+const EditDetails = ({ CloseDialogue, data, resetData, uid, userid }) => {
+  console.log(data);
+  const docref = doc(db, "doctors", userid);
   const [phone, setPhone] = useState(0);
   const [hospital, setHospital] = useState("");
 
@@ -12,6 +13,7 @@ const EditDetails = ({ CloseDialogue, data, resetData, uid }) => {
     setUploading(true);
     updateDoc(docref, {
       personaldata: {
+        name: data.name,
         hospital: hospital,
         phone: phone,
       },

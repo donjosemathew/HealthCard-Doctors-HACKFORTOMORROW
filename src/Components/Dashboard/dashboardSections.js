@@ -5,30 +5,59 @@ import { useState } from "react";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useParams } from "react-router-dom";
-const DashboardSection = ({ name, image }) => {
+const DashboardSection = ({ name, image, userid }) => {
   //const [uid, setUid] = useState("");
   let { uid } = useParams();
   const colRef = doc(db, "user", uid);
-  const colRef2 = doc(db, "doctors", "qQr7J8vNTYRxvle1C8h3aZJXBkF3");
+  const colRef2 = doc(db, "doctors", userid);
   const [data, setData] = useState("");
   const [dataDoctors, setDataDoctors] = useState("");
   const [load, setLoad] = useState(true);
+  /////////////////////
+  const month = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const d = new Date();
+  let dname = month[d.getMonth()];
+  let day = d.getDay();
+  let year = d.getFullYear();
+  const currentday = day + " " + dname + " " + year;
+
+  ///////////////////////////////
 
   //const q=query(colRef,where)
   const getDoctorsData = () => {
     setDataDoctors("");
     getDoc(colRef2).then((doc) => {
-      setDataDoctors(doc.data());
-      console.log(doc.data());
-      setLoad(false);
+      if (doc.exists) {
+        setDataDoctors(doc.data());
+
+        setLoad(false);
+      }
     });
   };
   const resetData = () => {
     setData("");
     getDoc(colRef).then((doc) => {
-      setData(doc.data());
-      console.log(doc.data());
-      getDoctorsData();
+      if (doc.exists) {
+        setData(doc.data());
+        getDoctorsData();
+      } else {
+        console.log("No such document!");
+      }
     });
   };
   useEffect(() => {
@@ -66,7 +95,18 @@ const DashboardSection = ({ name, image }) => {
             All Patients
           </button>
         </div>
-        {btn === 1 ? <Patient uid={uid} load={load} data={data} /> : ""}
+        {btn === 1 ? (
+          <Patient
+            dataDoctor={dataDoctors.personaldata}
+            GetDate={currentday}
+            uid={uid}
+            resetData={resetData}
+            load={load}
+            data={data}
+          />
+        ) : (
+          ""
+        )}
         {btn === 2 ? "" : ""}
       </div>
       <div className="dashboard-section__sec2 ">
@@ -74,6 +114,7 @@ const DashboardSection = ({ name, image }) => {
           name={name}
           image={image}
           uid={uid}
+          userid={userid}
           resetData={resetData}
           data={dataDoctors.personaldata}
         />
