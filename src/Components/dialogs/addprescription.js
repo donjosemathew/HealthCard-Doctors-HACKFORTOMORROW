@@ -26,7 +26,7 @@ const EditPrescription = ({
     });
     if (smedateindex !== -1) {
       data.prescription.map((item, ind) => {
-        if (item.date !== "2d6 Januvary 2021") {
+        if (item.date !== GetDate) {
           json.push(item);
         }
       });

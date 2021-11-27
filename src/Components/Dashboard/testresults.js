@@ -82,7 +82,6 @@ const Testresults = ({ data, resetData, load, uid }) => {
                               href={item.url}
                               className="flex mt-2 text-impo flex-row font-medium tracking-tight items-center text-2xl"
                               target="_blank"
-                              rel="noreferrer"
                             >
                               <HiDownload color="#575ce5" size="1em" /> Download
                               PDF

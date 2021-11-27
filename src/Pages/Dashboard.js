@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 
 const Dashboard = () => {
   let location = useLocation();
-
+  console.log(location.pathname);
   return (
     <AuthContext.Consumer>
       {({ user, load, SignIn, SignOut }) =>
@@ -24,7 +24,7 @@ const Dashboard = () => {
               />
             </div>
           ) : (
-            <Redirect to={user ? location : "/"} />
+            <Redirect to={location.pathname} />
           )
         ) : (
           ""

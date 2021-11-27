@@ -41,7 +41,10 @@ const Patient = ({
               <div className="flex flex-row justify-between">
                 <p className="text-2xl head-txt font-medium tracking-tight">
                   Patinet Name:
-                  <span className="font-bold sub-txt "> Sam Jose</span>
+                  <span className="font-bold sub-txt ">
+                    {" "}
+                    {data ? data.personaldata.name : "Not Available"}
+                  </span>
                 </p>
                 <p className="text-2xl head-txt font-medium tracking-tight">
                   Age:
@@ -166,7 +169,9 @@ const Patient = ({
                                 {data.category}
                               </p>
                               <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
-                                {data.url}
+                                <a href={data.url} className="" target="_blank">
+                                  Download PDF
+                                </a>
                               </p>
                               <p className="text-2xl ml-5 sub-txt  text-center w-full head-txt font-medium tracking-tight">
                                 {data.date}

@@ -12,11 +12,11 @@ function App() {
               <Dashboard />
             </Route>
 
-            <Route exact path="/topics">
-              <Home />
-            </Route>
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route path="/dashboard/:uid">
+              <Dashboard />
             </Route>
           </Switch>
         </div>

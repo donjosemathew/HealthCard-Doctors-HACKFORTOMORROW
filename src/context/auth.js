@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { provider, auth, db } from "../firebase/firebase";
 import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import { Redirect } from "react-router-dom";
 export const AuthContext = createContext();
 
 const AuthContextprovider = (props) => {
@@ -67,11 +68,13 @@ const AuthContextprovider = (props) => {
     signOut(auth)
       .then(() => {
         setUser(false);
+        <Redirect to="/" />;
       })
       .catch((error) => {
         // An error happened.
       });
   };
+
   return (
     <AuthContext.Provider
       value={{ load: load, user: currentuser, SignIn, SignOut }}

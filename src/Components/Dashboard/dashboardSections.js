@@ -11,6 +11,7 @@ const DashboardSection = ({ name, image, userid, location }) => {
   const colRef = doc(db, "user", uid);
   const colRef2 = doc(db, "doctors", userid);
   const [data, setData] = useState("");
+  const [notexists, setnotexists] = useState(false);
   const [dataDoctors, setDataDoctors] = useState("");
   const [load, setLoad] = useState(true);
   /////////////////////
@@ -41,22 +42,25 @@ const DashboardSection = ({ name, image, userid, location }) => {
   //const q=query(colRef,where)
   const getDoctorsData = () => {
     getDoc(colRef2).then((doc) => {
-      if (doc.exists) {
+      if (doc.exists()) {
         setDataDoctors(doc.data());
-
         setLoad(false);
+      } else {
       }
     });
   };
   const resetData = () => {
-    setData("");
     getDoc(colRef).then((doc) => {
-      if (doc.exists) {
-        setData(doc.data());
-        getDoctorsData();
-      } else {
-        console.log("No such document!");
+      if (uid !== "dashboard") {
+        if (doc.exists()) {
+          setData(doc.data());
+          getDoctorsData();
+        } else {
+          //setData("Not Exists");
+          setnotexists(true);
+        }
       }
+      getDoctorsData();
     });
   };
   useEffect(() => {
@@ -102,19 +106,27 @@ const DashboardSection = ({ name, image, userid, location }) => {
             <p className="text-3xl font-bold">Please scan QR of patients </p>
           </div>
         )}
-
         {btn === 1 && uid !== "dashboard" ? (
-          <Patient
-            dataDoctor={dataDoctors.personaldata}
-            GetDate={currentday}
-            uid={uid}
-            resetData={resetData}
-            load={load}
-            data={data}
-          />
+          !notexists ? (
+            <Patient
+              dataDoctor={dataDoctors.personaldata}
+              GetDate={currentday}
+              uid={uid}
+              resetData={resetData}
+              load={load}
+              data={data}
+            />
+          ) : (
+            <div className="flex w-full ">
+              <p className="text-4xl mt-6 head-txt font-bold w-full text-center">
+                No Data Available
+              </p>
+            </div>
+          )
         ) : (
           ""
         )}
+
         {btn === 2 ? "" : ""}
       </div>
       <div className="dashboard-section__sec2 ">

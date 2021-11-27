@@ -1,7 +1,9 @@
 import React from "react";
 import { AuthContext } from "../context/auth";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 const Home = () => {
+  let location = useLocation();
+  console.log(location.pathname, "loca");
   return (
     <AuthContext.Consumer>
       {({ user, SignIn, SignOut }) =>
@@ -41,7 +43,10 @@ const Home = () => {
             </div>
           </>
         ) : (
-          <Redirect to={"/dashboard/dashboard"} />
+          <Redirect
+            to="/dashboard/dashboard
+          "
+          />
         )
       }
     </AuthContext.Consumer>
