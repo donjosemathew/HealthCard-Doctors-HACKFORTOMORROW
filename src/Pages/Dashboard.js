@@ -23,7 +23,7 @@ const Dashboard = () => {
               />
             </div>
           ) : (
-            <Redirect to={location} />
+            <Redirect to={user ? location : "/"} />
           )
         ) : (
           ""
