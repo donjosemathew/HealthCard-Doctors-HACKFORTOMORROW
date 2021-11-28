@@ -2,7 +2,7 @@ import Loader from "react-loader-spinner";
 import { FaRegHospital } from "react-icons/fa";
 import { HiDownload, HiPlusSm, HiXCircle } from "react-icons/hi";
 import EditPrescription from "../dialogs/addprescription";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 const Testresults = ({ data, resetData, load, uid }) => {
   const [prescription, setPrescription] = useState(false);
   const [indexOfSelectedResult, setIndexOfSelectedResult] = useState(0);

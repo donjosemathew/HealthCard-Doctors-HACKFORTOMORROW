@@ -1,5 +1,5 @@
 import { updateDoc, doc } from "firebase/firestore";
-import { useState, useEffect } from "react/cjs/react.development";
+import { useState, useEffect } from "react";
 import { db } from "../../firebase/firebase";
 import Loader from "react-loader-spinner";
 const EditDetails = ({ CloseDialogue, data, resetData, uid, userid }) => {
