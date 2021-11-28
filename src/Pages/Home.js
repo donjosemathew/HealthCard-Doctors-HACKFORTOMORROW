@@ -23,8 +23,8 @@ const Home = () => {
                       Health<span className="font-medium">Carrd</span>
                     </h1>
                     <p className="bg-transparent mt-3 text-center font-medium w-3/6  head-txt  input-text text-4xl outline-none ml-3 text-gray-500">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Quo du
+                      I trust I may be enabled in the treatment of patients
+                      always to act with a single eye to their good.
                     </p>
                     <div className="flex mt-4 p-5 bg-white bg-opacity-20">
                       {" "}
